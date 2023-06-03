@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import Home from './../pages/Home'
 import AboutUs from './../pages/AboutUs'
@@ -14,13 +14,13 @@ const MainPage = ({ user }) => {
             <Navbar user={user} />
             <div>
                 <Routes>
-                    <Route path='/' element={<Welcome />} />
-                    <Route path='/home' element={<Home />} />
-                    <Route path='/create' element={<Create />} />
-                    <Route path='/about' element={<AboutUs />} />
-                    <Route path='/profile' element={<MyProfile />} />
-                    <Route path='/create/audio' element={<CreateAudio />} />
-                    <Route path='/create/text' element={<CreateText />} />
+                    <Route path='/' element={user ? <Welcome /> : <Navigate to='/login'/>} />
+                    <Route path='/home' element={user ? <Home /> : <Navigate to='/login'/>} />
+                    <Route path='/create' element={user ? <Create /> : <Navigate to='/login'/>} />
+                    <Route path='/about' element={user ? <AboutUs /> : <Navigate to='/login'/>} />
+                    <Route path='/profile' element={user ? <MyProfile /> : <Navigate to='/login'/>} />
+                    <Route path='/create/audio' element={user ? <CreateAudio /> : <Navigate to='/login'/>} />
+                    <Route path='/create/text' element={user ? <CreateText /> : <Navigate to='/login'/>} />
                 </Routes>
             </div>
         </div>

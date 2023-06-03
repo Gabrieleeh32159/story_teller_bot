@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 export const API_KEY = import.meta.env.VITE_OPENAI_KEY
 export const API_ORGANIZATION = "org-CchWzZMfAU37caEG7DHUF1b1"
-console.log(API_KEY)
+
 export function request_image(p, setImage, setLoading) {
     const configuration = new Configuration({
         apiKey: API_KEY,
