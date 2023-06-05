@@ -1,19 +1,17 @@
-import React, { useEffect, useState} from "react"
+import React, { useEffect, useState, useRef} from "react"
 import InputBox from "./InputBox"
 import GoogleLogin from "react-google-login"
 import { gapi } from "gapi-script"
 import { useForm } from "react-hook-form"
-import RegisterForm from "./RegisterForm"
-import { Navigate, useNavigate } from "react-router-dom"
 
 
 export default function LoginForm({ setUser }) {
 
-    const {failure, useFailure} = useState(false)
+    const [failure, setFailure] = useState(false);
 
     const clientID = "256577745412-itrj5u2ar37v99vg51ki8d2d4g7n1i8h.apps.googleusercontent.com"
 
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit} = useForm();
 
     const login_URL = 'https://6qzxjzoas6.execute-api.us-east-1.amazonaws.com/dev/user/login'
 
@@ -35,11 +33,8 @@ export default function LoginForm({ setUser }) {
         console.log("pipipi")
     }
 
-    const defaultUser = {
-        imageUrl: "https://us.123rf.com/450wm/tifani1/tifani11712/tifani1171200256/92275163-ilustraci%C3%B3n-del-icono-de-usuario.jpg",
-        username: "Default User"
-    }
-
+    const checkboxRef = useRef(null)
+    
     return (
         <div className="h-full w-full absolute flex justify-center items-center">
             <section className="h-auto w-1/3 backdrop-blur-md font-light">
@@ -54,12 +49,11 @@ export default function LoginForm({ setUser }) {
                                             method: "POST",
                                             body: JSON.stringify(data),
                                         })
-                                        .then((response) => {
-                                            if (response.ok) {
-                                                console.log(defaultUser)
-                                                setUser(defaultUser);
-                                            } else {
-                                                setFailure(true)
+                                        .then((response) => response.json(0))
+                                        .then((data) => {
+                                            if (data.ok) {
+                                                checkboxRef.current.checked != null && checkboxRef.current.checked && localStorage.setItem('user', JSON.stringify(data));
+                                                setUser(data);
                                             }
                                         })
                                     }
@@ -70,10 +64,9 @@ export default function LoginForm({ setUser }) {
                             <InputBox inputType="email" icon={true} inputName="Email" register={register} toRegister="email"></InputBox>
                             <InputBox inputType="password" icon={true} inputName="Password" register={register} toRegister="password"></InputBox>
                             <div className="flex justify-between px-10 ">
-                                <div className="">
-                                    <label htmlFor="">
-                                        <input type="checkbox" className="appearance-none h-4 w-4 rounded mr-3 bg-slate-200 transition-all duration-300 checked:bg-slate-700 checked:border-2" /> Remember me
-                                    </label>
+                                <div>
+                                    <input type="checkbox" id="checkbox" ref={checkboxRef} className="appearance-none h-4 w-4 rounded mr-3 bg-slate-200 transition-all duration-300 checked:bg-slate-700 checked:border-2" /> 
+                                    <label htmlFor="checkbox">Remember me</label>
                                 </div>
                                 <div className="ml-8">
                                     <span className="hover:underline">
@@ -89,7 +82,7 @@ export default function LoginForm({ setUser }) {
                             </div>
                             <div className="text-center -translate-y-4 text-lg">
                                 <p>Don't have an account?</p>
-                                <p className="">
+                                <p>
                                     <a href="/register" className="font-bold hover:underline">Register</a>  or
                                 </p>
                                 <GoogleLogin

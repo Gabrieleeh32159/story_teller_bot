@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Create = () => {
-    console.log(window.location.pathname)
     return (
         <div className='text-center text-white text-6xl pt-10'>
             <h1>Create </h1>

@@ -8,19 +8,19 @@ import Welcome from '../pages/Welcome'
 import CreateAudio from './CreateAudio'
 import CreateText from './CreateText'
 
-const MainPage = ({ user }) => {
+const MainPage = ({ user, setUser }) => {
     return (
         <div className=''>
-            <Navbar user={user} />
+            <Navbar user={user} setUser={setUser} />
             <div>
                 <Routes>
-                    <Route path='/' element={user ? <Welcome /> : <Navigate to='/login'/>} />
-                    <Route path='/home' element={user ? <Home /> : <Navigate to='/login'/>} />
-                    <Route path='/create' element={user ? <Create /> : <Navigate to='/login'/>} />
-                    <Route path='/about' element={user ? <AboutUs /> : <Navigate to='/login'/>} />
-                    <Route path='/profile' element={user ? <MyProfile /> : <Navigate to='/login'/>} />
-                    <Route path='/create/audio' element={user ? <CreateAudio /> : <Navigate to='/login'/>} />
-                    <Route path='/create/text' element={user ? <CreateText /> : <Navigate to='/login'/>} />
+                    <Route path='/' element={<Welcome />} />
+                    <Route path='/home' element={<Home />} />
+                    <Route path='/create' element={<Create />} />
+                    <Route path='/about' element={<AboutUs />} />
+                    <Route path='/profile' element={<MyProfile />} />
+                    <Route path='/create/audio' element={<CreateAudio />} />
+                    <Route path='/create/text' element={<CreateText />} />
                 </Routes>
             </div>
         </div>
