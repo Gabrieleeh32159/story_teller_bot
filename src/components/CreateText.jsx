@@ -20,7 +20,6 @@ const CreateText = () => {
         }).then(response => response.json())
         .then(data => {
             if (data.ok) {
-                console.log(data)
                 setQueries(data.queries)
             }
         })
@@ -31,28 +30,26 @@ const CreateText = () => {
 
     useEffect(() => {
         console.log("effect!")
-        queries?.map( (q) => {
+        setImages([])
+        if (queries != null) {queries.slice(0, 5).map( async (q) => {
             console.log(q);
             let b = {
-                query: q,
-                for_real: false,
+                query: q + " Charles Dana Gibson style.",
+                for_real: true,
                 n_images: 1
             }
-            fetch(urlImages, {
+            var response = await fetch(urlImages, {
                 method: "POST",
                 body: JSON.stringify(b)
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        console.log(data);
-                        imgs.push("avion");
-                        console.log(imgs)
-                    }
-                })
-            //console.log(imgs)
-        })
-        //setImages(imgs)
+
+            response = await response.json();
+
+            setImages((prevImages) => {
+                return [...prevImages, {query: q, url:response.images[0]}];
+            })
+                
+        })}
     } ,[queries])
 
     return (
@@ -67,7 +64,7 @@ const CreateText = () => {
                 </form>
             </div>
             <div className='w-1/2 h-full p-8 flex justify-center items-center text-white text-xl'>
-            <Swiper
+            {/* <Swiper
                 className="w-full h-full"
                 onSlideChange={() => console.log('slide change')}
                 onSwiper={(swiper) => console.log(swiper)}
@@ -75,16 +72,17 @@ const CreateText = () => {
             {images?.map((url, i) => (
                 <SwiperSlide key={i} className="h-full w-full object-contain"> <img src={url} alt="fotitochevere" /></SwiperSlide>
             ))}
-            </Swiper>
-                {/*
-                    loading ?
-                        <div className="w-full h-full m-5 animate-pulse bg-red-300 opacity-40 rounded-3xl flex items-center justify-center">
-                            <span>Loading...</span>
-                        </div> :
-                    image ?
-                        <img src={image.data[0].url} alt="" className="h-full w-full object-contain" />
-                        : <p>Here will be your image</p> 
-    */}
+            </Swiper> */}
+            <div
+                className="w-full h-full flex flex-wrap"
+            >
+            {images?.map(({query, url}, i) => (
+                <div key={i} className="flex flex-col gap-5">
+                <h1 className="text-black">{query}</h1>
+                <img src={url} alt="history" className="object-contain h-full w-auto"/>
+                </div>
+            ))}
+            </div>
             </div>
         </div>
     )
