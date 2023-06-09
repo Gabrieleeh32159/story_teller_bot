@@ -1,15 +1,33 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
+import EditQueries from '../components/EditQueries'
+import CreateText from '../components/CreateText'
+import CreateAudio from '../components/CreateAudio'
 
 const Create = () => {
+    const [text, setText] = useState(null)
+    useEffect( () => {
+        console.log("effect")
+        setText(null)
+    }, [])
     return (
-        <div className='text-center text-white text-6xl pt-10'>
-            <h1>Create </h1>
-            <div className='w-full h-[700px] flex justify-evenly py-20'>
-                <Link to="audio"><img src="/src/assets/audio.svg" alt="" className='h-full w-full p-10 object-center border rounded-3xl backdrop-blur-xl hover:scale-110 animations-all duration-500' /></Link>
-                <Link to="text"><img src="/src/assets/text.svg" alt="" className='h-full w-full p-10 object-center border rounded-3xl backdrop-blur-xl hover:scale-110 animations-all duration-500' /></Link>
-            </div>
-        </div>
+        <>
+            <Routes>
+                <Route path="/" element={
+                    <div className='text-center text-white text-6xl pt-10'>
+                        <h1>Create </h1>
+                        <div className='w-full h-[700px] flex justify-evenly py-20'>
+                            <Link to="audio"><img src="/src/assets/audio.svg" alt="" className='h-full w-full p-10 object-center border rounded-3xl backdrop-blur-xl hover:scale-110 animations-all duration-500' /></Link>
+                            <Link to="text"><img src="/src/assets/text.svg" alt="" className='h-full w-full p-10 object-center border rounded-3xl backdrop-blur-xl hover:scale-110 animations-all duration-500' /></Link>
+                        </div>
+                    </div>
+                } />
+                <Route path="/text" element={text ? <Navigate to="../edit" /> : <CreateText text={text} setText={setText}/>} />
+                <Route path="/audio" element={text ? <Navigate to="../edit" /> : <CreateAudio setText={setText}/>} />
+                <Route path="/edit" element={<EditQueries text={text}/>} />
+            </Routes>
+        </>
     )
 }
 
