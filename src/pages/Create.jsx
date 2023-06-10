@@ -7,6 +7,7 @@ import CreateAudio from '../components/CreateAudio'
 
 const Create = () => {
     const [text, setText] = useState(null)
+    const [style, setStyle] = useState("Anna Gibbson")
     useEffect( () => {
         console.log("effect")
         setText(null)
@@ -23,9 +24,9 @@ const Create = () => {
                         </div>
                     </div>
                 } />
-                <Route path="/text" element={text ? <Navigate to="../edit" /> : <CreateText text={text} setText={setText}/>} />
-                <Route path="/audio" element={text ? <Navigate to="../edit" /> : <CreateAudio setText={setText}/>} />
-                <Route path="/edit" element={<EditQueries text={text}/>} />
+                <Route path="/text" element={text ? <Navigate to="../edit" /> : <CreateText text={text} setText={setText} setStyle={setStyle}/>} />
+                <Route path="/audio" element={text ? <Navigate to="../edit" /> : <CreateAudio setText={setText} setStyle={setStyle}/>} />
+                <Route path="/edit" element={<EditQueries text={text} style={style}/>} />
             </Routes>
         </>
     )
