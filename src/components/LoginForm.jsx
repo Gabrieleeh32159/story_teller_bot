@@ -1,11 +1,14 @@
-import React, { useEffect, useState, useRef} from "react"
+import React, { useEffect, useState, useRef, useContext} from "react"
 import InputBox from "./InputBox"
 import GoogleLogin from "react-google-login"
 import { gapi } from "gapi-script"
 import { useForm } from "react-hook-form"
+import { UserContext } from "../App"
 
 
-export default function LoginForm({ setUser }) {
+export default function LoginForm() {
+
+    const [user, setUser] = useContext(UserContext);
 
     const [failure, setFailure] = useState(false);
 
@@ -53,6 +56,7 @@ export default function LoginForm({ setUser }) {
                                         .then((data) => {
                                             if (data.ok) {
                                                 checkboxRef.current.checked != null && checkboxRef.current.checked && localStorage.setItem('user', JSON.stringify(data));
+                                                console.log(data);
                                                 setUser(data);
                                             }
                                         })

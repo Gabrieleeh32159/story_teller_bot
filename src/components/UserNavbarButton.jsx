@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../App'
 
-export default function UserNavbarButton({user, setUser}) {
+export default function UserNavbarButton() {
+    const [user, setUser] = useContext(UserContext);
+
     return (
         <>
         <Link to="/profile" className='flex h-full hover:cursor-pointer hover:bg-slate-600 transition-all'>

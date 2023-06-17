@@ -5,14 +5,11 @@ import AboutUs from './../pages/AboutUs'
 import MyProfile from './../pages/MyProfile'
 import Create from '../pages/Create'
 import Welcome from '../pages/Welcome'
-import CreateAudio from './CreateAudio'
-import CreateText from './CreateText'
-import EditQueries from './EditQueries'
 
-const MainPage = ({ user, setUser }) => {
+const MainPage = () => {
     return (
         <div className='relative'>
-            <Navbar user={user} setUser={setUser} />
+            <Navbar />
             <div>
                 <Routes>
                     <Route path='/' element={<Welcome />} />
@@ -20,9 +17,6 @@ const MainPage = ({ user, setUser }) => {
                     <Route path='/create/*' element={<Create />} />
                     <Route path='/about' element={<AboutUs />} />
                     <Route path='/profile' element={<MyProfile />} />
-                    {/* <Route path='/create/audio' element={<CreateAudio />} />
-                    <Route path='/create/text' element={<CreateText />} />
-                    <Route path='/create/edit' element={<EditQueries />} /> */}
                 </Routes>
             </div>
         </div>
