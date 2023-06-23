@@ -4,6 +4,7 @@ import GoogleLogin from "react-google-login"
 import { gapi } from "gapi-script"
 import { useForm } from "react-hook-form"
 import { UserContext } from "../App"
+import { urlLogin } from "../constant"
 
 
 export default function LoginForm() {
@@ -15,8 +16,6 @@ export default function LoginForm() {
     const clientID = "256577745412-itrj5u2ar37v99vg51ki8d2d4g7n1i8h.apps.googleusercontent.com"
 
     const {register, handleSubmit} = useForm();
-
-    const login_URL = 'https://6qzxjzoas6.execute-api.us-east-1.amazonaws.com/dev/user/login'
 
     useEffect(() => {
         const start = () => {
@@ -48,7 +47,7 @@ export default function LoginForm() {
                                 handleSubmit(
                                     (data) => {
                                         data["type"] = "normal"
-                                        fetch(login_URL, {
+                                        fetch(urlLogin, {
                                             method: "POST",
                                             body: JSON.stringify(data),
                                         })
