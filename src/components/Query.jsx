@@ -1,25 +1,28 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from "react-hook-form"
 import InputBox from './InputBox'
-import { urlImages } from '../constant/index.js'
+import { serverUrl } from '../constant/index.js'
 import { UserContext } from '../App'
 
 const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, selected = true }) => {
     const { register, handleSubmit } = useForm()
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState()
+    const [styles, setStyles] = useState([])
     const [user, setUser] = useContext(UserContext)
     const onSubmit = (data) => {
         setImage(null)
         setLoading(true)
         setStyle(data.style)
         console.log(data.query + " This image with an " + data.style + " style.")
-        fetch(urlImages, {
+        fetch(serverUrl + "/image/create", {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${user.token}`
+                Authorization: `Bearer ${user.token}`,
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                story_id: 1,
                 query: data.query + ". This image will be generated with an " + data.style + " style.",
                 for_real: true,
                 n_images: 1
@@ -30,17 +33,43 @@ const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, selected = 
             }
         }).then(data => {
             console.log(data)
-            setImage(data.images[0])
+            setImage(serverUrl + data.images[0])
             setLoading(false)
         })
     }
+
+    useEffect(() => {
+        fetch(serverUrl + "/style", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+                "Content-Type": "text/html"
+            }
+        }).then(response => {
+            return response.json();
+        }
+        ).then(data => {
+            console.log(data)
+            setStyles(data.styles)
+        })
+    }, [])
 
     return (
         <div className={selected ? "h-full w-full flex flex-col items-center" : "hidden"}>
             <div className='w-full h-[800px] flex p-10'>
                 <form onSubmit={handleSubmit(onSubmit)} className='w-1/2 flex flex-col justify-center items-center gap-20 px-10'>
                     <InputBox inputType="text" inputName={`Prompt number ${index + 1}`} icon={false} register={register} toRegister="query" inputDefault={prompt} />
-                    <InputBox inputType="text" inputDefault={style} textarea={false} inputName="Estilo deseado" register={register} toRegister="style" />
+                    <div className="flex flex-col w-full relative pt-8 text-white">
+                        <input {...register("style")} type="text" required pattern="\S+.*" placeholder=" " className="font-light border-b pb-5 pt-3 border-color px-4 bg-transparent w-full peer focus:outline-none" defaultValue={style} list="stylesrecord" />
+                        <datalist id='stylesrecord'>
+                            {
+                                styles.map((prevstyle, index) => (
+                                    <option value={prevstyle} key={index}/>
+                                ))
+                            }
+                        </datalist>
+                        <label htmlFor="" className="absolute left-4 top-2 text-red-600 peer-placeholder-shown:text-white peer-valid:text-white peer-placeholder-shown:top-9 peer-focus:top-2 transition-all duration-500 font-bold">Estilo deseado</label>
+                    </div>
                     <input type="submit" className="
                         text-center text-2xl text-white xl rounded-full h-16 
                         transition-all duration-1000 bg-gradient-to-r to-purple-900 via-red-500 from-purple-900 bg-size-200 bg-pos-100 font-bold

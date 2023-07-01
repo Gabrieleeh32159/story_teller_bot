@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { urlPrompts } from '../constant';
+import { serverUrl } from '../constant';
 import Query from './Query';
 import { UserContext } from '../App';
 
@@ -8,10 +8,11 @@ const EditQueries = ({ text, style, setStyle }) => {
     const [prompts, setPromts] = useState(null);
     const [index, setIndex] = useState(0);
     useEffect(() => {
-        fetch(urlPrompts, {
+        fetch(serverUrl + "/story/prompts", {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${user.token}`
+                Authorization: `Bearer ${user.token}`,
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 story: text

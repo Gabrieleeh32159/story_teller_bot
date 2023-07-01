@@ -1,8 +1,9 @@
 import React from 'react'
+import Record from '../components/Record'
 
 const MyProfile = () => {
   return (
-    <div>MyProfile</div>
+    <Record />
   )
 }
 

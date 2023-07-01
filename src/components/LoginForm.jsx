@@ -4,7 +4,7 @@ import GoogleLogin from "react-google-login"
 import { gapi } from "gapi-script"
 import { useForm } from "react-hook-form"
 import { UserContext } from "../App"
-import { urlLogin } from "../constant"
+import { serverUrl } from "../constant"
 
 
 export default function LoginForm() {
@@ -47,11 +47,14 @@ export default function LoginForm() {
                                 handleSubmit(
                                     (data) => {
                                         data["type"] = "normal"
-                                        fetch(urlLogin, {
+                                        fetch(serverUrl + "/user/login", {
                                             method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                            },
                                             body: JSON.stringify(data),
                                         })
-                                        .then((response) => response.json(0))
+                                        .then((response) => response.json())
                                         .then((data) => {
                                             if (data.ok) {
                                                 checkboxRef.current.checked != null && checkboxRef.current.checked && localStorage.setItem('user', JSON.stringify(data));
