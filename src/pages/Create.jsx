@@ -8,6 +8,8 @@ import CreateAudio from '../components/CreateAudio'
 const Create = () => {
     const [text, setText] = useState(null)
     const [style, setStyle] = useState("Charles Dana Gibson style")
+    const [storyId, setStoryId] = useState(null)
+
     useEffect( () => {
         console.log("effect")
         setText(null)
@@ -24,9 +26,9 @@ const Create = () => {
                         </div>
                     </div>
                 } />
-                <Route path="/text" element={text ? <Navigate to="../edit" /> : <CreateText setText={setText}/>} />
+                <Route path="/text" element={text ? <Navigate to="../edit" /> : <CreateText setText={setText} setStoryId={setStoryId}/>} />
                 <Route path="/audio" element={text ? <Navigate to="../edit" /> : <CreateAudio setText={setText}/>} />
-                <Route path="/edit" element={<EditQueries text={text} style={style} setStyle={setStyle}/>} />
+                <Route path="/edit" element={<EditQueries text={text} style={style} setStyle={setStyle} storyId={storyId}/>} />
             </Routes>
         </>
     )

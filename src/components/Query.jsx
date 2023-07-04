@@ -4,7 +4,7 @@ import InputBox from './InputBox'
 import { serverUrl } from '../constant/index.js'
 import { UserContext } from '../App'
 
-const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, selected = true }) => {
+const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, storyId, selected = true }) => {
     const { register, handleSubmit } = useForm()
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState()
@@ -22,7 +22,7 @@ const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, selected = 
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                story_id: 1,
+                story_id: storyId,
                 query: data.query + ". This image will be generated with an " + data.style + " style.",
                 for_real: true,
                 n_images: 1
@@ -43,7 +43,7 @@ const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, selected = 
             method: "GET",
             headers: {
                 Authorization: `Bearer ${user.token}`,
-                "Content-Type": "text/html"
+                "Content-Type": "application/json"
             }
         }).then(response => {
             return response.json();

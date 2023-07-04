@@ -12,6 +12,7 @@
     "@react-oauth/google": "^0.11.0",
     "axios": "^1.3.6",
     "gapi-script": "^1.2.0",
+    "js-file-download": "^0.4.12",
     "openai": "^3.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
