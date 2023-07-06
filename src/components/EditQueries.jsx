@@ -45,7 +45,7 @@ const EditQueries = ({ text, style, setStyle, storyId }) => {
     return (
         <div className='flex flex-col items-center gap-5'>
             {prompts 
-            ? <div className='flex flex-col items-center'>
+            ? <div className='flex flex-col items-center gap-10'>
                 <p className='text-white text-2xl w-5/6 text-justify mt-8'>{text}</p>
                 {prompts.map((prompt, i) => {
                     return <Query key={i} prompt={prompt} storyId={storyId} style={style} setStyle={setStyle} index={index} setIndex={setIndex} maxIndex={prompts.length - 1} selected={(index == i) ? true : false}/>

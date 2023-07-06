@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useForm } from "react-hook-form";
 import InputBox from './InputBox';
-const CreateAudio = ({setText}) => {
+const CreateAudio = ({ setText }) => {
 
   const {
     transcript,
@@ -15,7 +15,22 @@ const CreateAudio = ({setText}) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    setText(data.text);
+    fetch(serverUrl + "/story", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: data.title
+      })
+    }).then(
+      response => response.json()
+    ).then(dt => {
+      console.log(dt)
+      setStoryId(dt.story_id)
+      setText(data.story);
+    })
   }
 
   if (!browserSupportsSpeechRecognition) {
@@ -36,7 +51,8 @@ const CreateAudio = ({setText}) => {
           </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-10 pt-10'>
-          <InputBox inputType="text" inputName="This is your story!" textarea={true} register={register} toRegister="text" inputDefault={transcript}></InputBox>
+          <InputBox inputType="text" inputName="Title" textarea={false} register={register} toRegister="title"></InputBox>
+          <InputBox inputType="text" inputName="Story" textarea={true} register={register} toRegister="story" inputDefault={transcript}></InputBox>
           <input type="submit" className="
           text-center text-2xl text-white xl rounded-full h-16 
           transition-all duration-1000 bg-gradient-to-r to-purple-900 via-red-500 from-purple-900 bg-size-200 bg-pos-100 font-bold

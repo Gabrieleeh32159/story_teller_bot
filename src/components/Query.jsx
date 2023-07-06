@@ -14,7 +14,6 @@ const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, storyId, se
         setImage(null)
         setLoading(true)
         setStyle(data.style)
-        console.log(data.query + " This image with an " + data.style + " style.")
         fetch(serverUrl + "/image/create", {
             method: "POST",
             headers: {
@@ -32,7 +31,6 @@ const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, storyId, se
                 return response.json()
             }
         }).then(data => {
-            console.log(data)
             setImage(serverUrl + data.images[0])
             setLoading(false)
         })
@@ -49,7 +47,6 @@ const Query = ({ prompt, style, setStyle, index, setIndex, maxIndex, storyId, se
             return response.json();
         }
         ).then(data => {
-            console.log(data)
             setStyles(data.styles)
         })
     }, [])

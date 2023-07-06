@@ -27,7 +27,7 @@ const Create = () => {
                     </div>
                 } />
                 <Route path="/text" element={text ? <Navigate to="../edit" /> : <CreateText setText={setText} setStoryId={setStoryId}/>} />
-                <Route path="/audio" element={text ? <Navigate to="../edit" /> : <CreateAudio setText={setText}/>} />
+                <Route path="/audio" element={text ? <Navigate to="../edit" /> : <CreateAudio setText={setText} setStoryId={setStoryId} />} />
                 <Route path="/edit" element={<EditQueries text={text} style={style} setStyle={setStyle} storyId={storyId}/>} />
             </Routes>
         </>

@@ -1,16 +1,38 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import InputBox from './InputBox'
 import { useForm } from "react-hook-form"
+import { serverUrl } from '../constant'
+import { UserContext } from '../App'
 
 const RegisterForm = () => {
   const {equal, setEqual} = useState(false)
   const {register, handleSubmit} = useForm()
+  const {user, setUser} = useContext(UserContext)
+
+  const onRegister = (data) => {
+    fetch(serverUrl + "/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: data.email,
+        username: data.username,
+        password: data.password
+      })
+    }).then(
+      response => response.json()
+    ).then(data => {
+      setUser(data)
+    })
+  }
   return (
     <React.Fragment>
       <div className='flex justify-center'>
         <div className='text-center text-white font-semibold rounded-xl p-10 w-2/3'>
           <h1 className='text-3xl'>Register</h1>
           <form 
+            onSubmit={handleSubmit(onRegister)}
             className="flex gap-5 flex-col"
             action="" >
             <InputBox inputType="email" icon={true} inputName="Email" register={register} toRegister="email"></InputBox>
