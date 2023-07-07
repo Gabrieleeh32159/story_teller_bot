@@ -19,7 +19,7 @@ const Record = () => {
       .then(response => response.json())
       .then(data => {
         data.stories.sort((story1, story2) => {
-          return new Date(story2) - new Date(story1);
+          return new Date(story2[2]) - new Date(story1[2]);
         })
         console.log(data)
         setRecord(data.stories);
